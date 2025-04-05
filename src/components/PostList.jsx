@@ -1,16 +1,28 @@
 import NewPost from './NewPost';
-
+import { useState } from 'react';
 import Post from './Post';
 import classes from './PostList.module.css';
 
 
-function PostList(){
+function PostList(){ 
+
+    const [enteredBody, setEnteredBody] = useState('');
+
+    const [enteredAuthor, setEnteredAuthor] = useState('');
+
+    function bodyChangeHandler(event){
+        setEnteredBody(event.target.value);
+    }
+
+    function onAuthorChange(event){
+        setEnteredAuthor(event.target.value);
+    }
+    
     return(
         <>
-        
-        <NewPost/>
+        <NewPost onBodyChange= {bodyChangeHandler} onAuthorChange= {onAuthorChange}/>
         <ul className={classes.posts}>
-            <Post author="James: " body = "Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance. - James 1:2-3"/>
+            <Post author={enteredAuthor} body = {enteredBody}/>
             <Post author="John" body = "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16"/>
         </ul>
         </>
