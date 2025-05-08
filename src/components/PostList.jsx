@@ -4,30 +4,29 @@ import Post from './Post';
 import classes from './PostList.module.css';
 import Modal from './Modal';
 
+function PostList({ isPosting, onStopPosting }) {
+  const [post, setPost] = useState([]);
 
-function PostList({isPosting, onStopPosting}){ 
+  function addPostHandler(postData) {
+    setPost((existingPost) => [postData, ...existingPost]);
+  }
 
-    const [modalIsVisible, setModalIsVisible] = useState(true);
-    
-    function hideModalHandler(){
-        setModalIsVisible(false);
-    }
-    return(
-        <>
-            {isPosting &&  (
-                <Modal onClose={onStopPosting}>
-                    <NewPost onCancel={onStopPosting}
-                />
-            </Modal>
-            )}
+  return (
+    <>
+      {isPosting && (
+        <Modal onClose={onStopPosting}>
+          <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
+        </Modal>
+      )}
+      {post.length > 0 && (
         <ul className={classes.posts}>
-           
-            <Post author="John" body = "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16"/>
+          {post.map((post) => (
+            <Post author={post.author} key={post.body} body={post.body} />
+          ))}
         </ul>
-        </>
-         
-    );
-
+      )}
+    </>
+  );
 }
 
 export default PostList;
